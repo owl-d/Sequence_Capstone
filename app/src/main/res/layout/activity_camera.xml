@@ -9,18 +9,9 @@
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tx_target"
+        android:layout_above="@+id/btn_record"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
-
-    <TextView
-        android:id="@+id/tx_target"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TARGET"
-        android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:layout_above="@+id/btn_record"/>
 
     <Button
         android:id="@+id/btn_record"

@@ -15,6 +15,8 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -23,7 +25,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -56,7 +57,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
     Button btn_record;
-    TextView tx_target;
 
     private int RESULT_PERMISSIONS = 100;
 
@@ -74,10 +74,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-
-        tx_target = (TextView) findViewById(R.id.tx_target);
-        tx_target.setText("TARGET : "+result);
 
         //Send ETRI Target to Server
         if(first) {
@@ -149,6 +145,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     }
 
     private void postRequest(String postUrl, RequestBody postBody) {
+
+        final SoundPool winSound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        final int win = winSound.load(this, R.raw.hello, 1);
+
         Log.d("TAG", "Run postRequest");
         OkHttpClient client = new OkHttpClient();
 
@@ -180,23 +180,35 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                     @Override
                     public void run() {
 
+                        int _return = 0;
                         try {
-                            String _return = response.body().string();
-
-                            Toast.makeText(getApplicationContext(), _return, Toast.LENGTH_SHORT).show();
-                            Log.d("TAG", "AWS Response : " + _return);
-
-                            if (_return == "Find Target Category") {
-                                Log.d("TAG", "There is Target Category!");
-                            }
-                            else if (_return == "Find Target Object") {
-                                Log.d("TAG", "There is Target Object!");
-                            }
-
+                            _return = Integer.parseInt(response.body().string());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.d("TAG", "PostRequeset : Upload Success");
+
+                        if (_return == 1) {
+                            Log.d("TAG", "AWS Response : ETRI FINISH");
+                            winSound.play(win, 1, 1, 0, 0, (float)1.2);
+                        }
+                        else if (_return == 2) {
+                            Log.d("TAG", "AWS Response : FINISH SMART BILL");
+                        }
+                        else if (_return == 3) {
+                            Log.d("TAG", "AWS Response : Find Target Category");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (_return == 4) {
+                            Log.d("TAG", "AWS Response : Find Target Object");
+                            Toast.makeText(getApplicationContext(), "Find Target Object", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (_return == 5) {
+                            Log.d("TAG", "AWS Response : Find Target Category But Not Object");
+                        }
+                        else if (_return == 6) {
+                            Log.d("TAG", "AWS Response : Detecting ...");
+                        }
+                        else {Log.d("TAG", "AWS Response : ELSE");}
 
                     }
                 });
