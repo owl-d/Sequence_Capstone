@@ -146,8 +146,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
     private void postRequest(String postUrl, RequestBody postBody) {
 
-        final SoundPool winSound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
-        final int win = winSound.load(this, R.raw.hello, 1);
+        final SoundPool Sound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        final int category = Sound.load(this, R.raw.target_category, 1);
+        final int object = Sound.load(this, R.raw.target_object, 1);
 
         Log.d("TAG", "Run postRequest");
         OkHttpClient client = new OkHttpClient();
@@ -189,7 +190,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
                         if (_return == 1) {
                             Log.d("TAG", "AWS Response : ETRI FINISH");
-                            winSound.play(win, 1, 1, 0, 0, (float)1.2);
                         }
                         else if (_return == 2) {
                             Log.d("TAG", "AWS Response : FINISH SMART BILL");
@@ -197,10 +197,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                         else if (_return == 3) {
                             Log.d("TAG", "AWS Response : Find Target Category");
                             Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(category, 1, 1, 0, 0, (float)1.0);
                         }
                         else if (_return == 4) {
                             Log.d("TAG", "AWS Response : Find Target Object");
                             Toast.makeText(getApplicationContext(), "Find Target Object", Toast.LENGTH_SHORT).show();
+                            Sound.play(object, 1, 1, 0, 0, (float)1.0);
                         }
                         else if (_return == 5) {
                             Log.d("TAG", "AWS Response : Find Target Category But Not Object");
