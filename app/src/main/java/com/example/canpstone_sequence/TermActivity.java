@@ -28,6 +28,7 @@ public class TermActivity extends AppCompatActivity {
         btn_bills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (bills_mode == 2) {
                     btn_bills.setText("상품 찾기가 끝났습니다!");
                 }

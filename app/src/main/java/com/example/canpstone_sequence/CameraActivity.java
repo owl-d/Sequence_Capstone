@@ -74,6 +74,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        
+        SoundPool Sound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        int click = Sound.load(this, R.raw.asterick, 1);
 
         //Send ETRI Target to Server
         if(first) {
@@ -85,6 +88,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         btn_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Sound.play(click, 1, 1, 0, 0, (float)1.0);
                 Log.d("TAG", "btn_record CLICK");
 
                 if(record_end) {
@@ -146,9 +150,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
     private void postRequest(String postUrl, RequestBody postBody) {
 
-        final SoundPool Sound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
-        final int category = Sound.load(this, R.raw.target_category, 1);
-        final int object = Sound.load(this, R.raw.target_object, 1);
+        SoundPool Sound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        int category = Sound.load(this, R.raw.target_category, 1);
+        int object = Sound.load(this, R.raw.target_object, 1);
 
         Log.d("TAG", "Run postRequest");
         OkHttpClient client = new OkHttpClient();
