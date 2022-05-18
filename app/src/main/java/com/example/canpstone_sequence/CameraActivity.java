@@ -153,6 +153,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         SoundPool Sound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
         int category = Sound.load(this, R.raw.target_category, 1);
         int object = Sound.load(this, R.raw.target_object, 1);
+        int bill_success = Sound.load(this, R.raw.bill_success, 1);
+        int bill_fail = Sound.load(this, R.raw.bill_fail, 1);
 
         Log.d("TAG", "Run postRequest");
         OkHttpClient client = new OkHttpClient();
@@ -196,7 +198,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                             Log.d("TAG", "AWS Response : ETRI FINISH");
                         }
                         else if (_return == 2) {
-                            Log.d("TAG", "AWS Response : FINISH SMART BILL");
+                            Log.d("TAG", "AWS Response : FINISH SMART BILL - SUCCESS");
+                            Sound.play(bill_success, 1, 1, 0, 0, (float)1.0);
                         }
                         else if (_return == 3) {
                             Log.d("TAG", "AWS Response : Find Target Category");
@@ -213,6 +216,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                         }
                         else if (_return == 6) {
                             Log.d("TAG", "AWS Response : Detecting ...");
+                        }
+                        else if (_return == 7) {
+                            Log.d("TAG", "AWS Response : FINISH SMART BILL - FAIL");
+                            Sound.play(bill_fail, 1, 1, 0, 0, (float)1.0);
                         }
                         else {Log.d("TAG", "AWS Response : ELSE");}
 
