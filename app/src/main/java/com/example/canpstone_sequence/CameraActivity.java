@@ -151,8 +151,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     private void postRequest(String postUrl, RequestBody postBody) {
 
         SoundPool Sound = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
-        int category = Sound.load(this, R.raw.target_category, 1);
+        int category_milk = Sound.load(this, R.raw.category_milk, 1);
+        int category_snack = Sound.load(this, R.raw.category_snack, 1);
+        int category_beverage = Sound.load(this, R.raw.category_beverage, 1);
         int object = Sound.load(this, R.raw.target_object, 1);
+        int bananakick = Sound.load(this, R.raw.bananakick, 1);
+        int cocacola = Sound.load(this, R.raw.cocacola, 1);
+        int jagalchi = Sound.load(this, R.raw.jagalchi, 1);
+        int maeil_almond_breeze = Sound.load(this, R.raw.maeil_almond_breeze, 1);
+        int namyang_milk_gt = Sound.load(this, R.raw.namyang_milk_gt, 1);
+        int saewooggang_90g = Sound.load(this, R.raw.saewooggang_90g, 1);
+        int seoul_milk = Sound.load(this, R.raw.seoul_milk, 1);
+        int toraeta = Sound.load(this, R.raw.toraeta, 1);
         int bill_success = Sound.load(this, R.raw.bill_success, 1);
         int bill_fail = Sound.load(this, R.raw.bill_fail, 1);
 
@@ -201,25 +211,71 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                             Log.d("TAG", "AWS Response : FINISH SMART BILL - SUCCESS");
                             Sound.play(bill_success, 1, 1, 0, 0, (float)1.0);
                         }
-                        else if (_return == 3) {
-                            Log.d("TAG", "AWS Response : Find Target Category");
-                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
-                            Sound.play(category, 1, 1, 0, 0, (float)1.0);
-                        }
-                        else if (_return == 4) {
-                            Log.d("TAG", "AWS Response : Find Target Object");
-                            Toast.makeText(getApplicationContext(), "Find Target Object", Toast.LENGTH_SHORT).show();
-                            Sound.play(object, 1, 1, 0, 0, (float)1.0);
-                        }
-                        else if (_return == 5) {
-                            Log.d("TAG", "AWS Response : Find Target Category But Not Object");
-                        }
-                        else if (_return == 6) {
-                            Log.d("TAG", "AWS Response : Detecting ...");
-                        }
                         else if (_return == 7) {
                             Log.d("TAG", "AWS Response : FINISH SMART BILL - FAIL");
                             Sound.play(bill_fail, 1, 1, 0, 0, (float)1.0);
+                        }
+
+
+                        else if (_return == 10) {
+                            Log.d("TAG", "AWS Response : Find MILK Category");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(category_milk, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 11) {
+                            Log.d("TAG", "AWS Response : Find SNACK Category");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(category_snack, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 12) {
+                            Log.d("TAG", "AWS Response : Find BEVERAGE Category");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(category_beverage, 1, 1, 0, 0, (float)1.0);
+                        }
+
+                        else if (_return == 20) {
+                            Log.d("TAG", "AWS Response : Find Object '남양맛있는우유GT'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(namyang_milk_gt, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 21) {
+                            Log.d("TAG", "AWS Response : Find Object '농심매운새우깡90G'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(saewooggang_90g, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 22) {
+                            Log.d("TAG", "AWS Response : Find Object '아몬드브리즈뉴트리플러스프로틴'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(maeil_almond_breeze, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 23) {
+                            Log.d("TAG", "AWS Response : Find Object '코카콜라)코카콜라350ML'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(cocacola, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 24) {
+                            Log.d("TAG", "AWS Response : Find Object '농심자갈치90G'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(jagalchi, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 25) {
+                            Log.d("TAG", "AWS Response : Find Object '농심바나나킥75G'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(bananakick, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 26) {
+                            Log.d("TAG", "AWS Response : Find Object '코카토레타500ML'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(toraeta, 1, 1, 0, 0, (float)1.0);
+                        }
+                        else if (_return == 27) {
+                            Log.d("TAG", "AWS Response : Find Object '서울우유'");
+                            Toast.makeText(getApplicationContext(), "Find Target Category", Toast.LENGTH_SHORT).show();
+                            Sound.play(seoul_milk, 1, 1, 0, 0, (float)1.0);
+                        }
+
+                        else if (_return == 6) {
+                            Log.d("TAG", "AWS Response : Detecting ...");
                         }
                         else {Log.d("TAG", "AWS Response : ELSE");}
 

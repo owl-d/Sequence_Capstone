@@ -6,21 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/buttonStart"
-        android:layout_width="match_parent"
-        android:layout_height="74dp"
-        android:layout_margin="10dp"
-        android:layout_weight="0"
-        android:text="PUSH TO START"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
-
 
     <TextView
         android:id="@+id/textResult"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -28,7 +18,8 @@
         android:layout_weight="0"
         android:background="@android:color/background_light"
         android:inputType="textMultiLine"
-        android:text="ETRI OpenASR\n\nhttp://www.etri.re.kr"
+        android:text="ETRI Open API 사용을 위해\n오디오 녹화 버튼을 눌러주세요.\n여기 결과가 표시됩니다."
+        android:gravity="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -36,11 +27,19 @@
         app:layout_constraintVertical_bias="0.326" />
 
     <Button
-        android:id="@+id/buttonNext"
+        android:id="@+id/buttonStart"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="200dp"
         android:layout_margin="10dp"
         android:layout_weight="0"
-        android:text="PUSH TO DETECT" />
+        android:text="PUSH TO RECORD AUDIO" />
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:layout_weight="0"
+        android:text="PUSH TO DETECT OBJECT" />
 
 </LinearLayout>

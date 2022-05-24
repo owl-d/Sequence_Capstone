@@ -74,19 +74,20 @@ public class ETRIActivity extends AppCompatActivity {
                 // 녹음이 비정상적으로 종료되었음(마이크 권한 등)
                 case 3:
                     textResult.setText(v);
-                    buttonStart.setText("PUSH TO START");
+                    buttonStart.setText("PUSH TO RECORD AUDIO");
                     break;
                 // 인식이 비정상적으로 종료되었음(timeout 등)
                 case 4:
                     textResult.setText(v);
+
                     buttonStart.setEnabled(true);
-                    buttonStart.setText("PUSH TO START");
+                    buttonStart.setText("PUSH TO RECORD AUDIO");
                     break;
                 // 인식이 정상적으로 종료되었음 (thread내에서 exception포함)
                 case 5:
                     textResult.setText(StringEscapeUtils.unescapeJava(result));
                     buttonStart.setEnabled(true);
-                    buttonStart.setText("PUSH TO START");
+                    buttonStart.setText("PUSH TO RECORD AUDIO");
                     break;
             }
             super.handleMessage(msg);

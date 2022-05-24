@@ -10,6 +10,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="스마트 영수증 기능을 사용하려면\n화면을 눌러주세요" />
+        android:text="스마트 영수증 기능을\n사용하려면\n화면을 눌러주세요"
+        android:textSize="30dp"/>
 
 </LinearLayout>
