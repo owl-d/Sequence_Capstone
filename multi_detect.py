@@ -1,3 +1,10 @@
+# Mecab 설치 코드
+# !sudo apt-get install g++ openjdk-8-jdk python3-dev python3-pip curl
+# !python3 -m pip install --upgrade pip
+# !python3 -m pip install konlpy
+# !sudo apt-get install curl git
+# !bash <(curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh)
+
 import time
 from flask import Flask, request, jsonify
 import base64
@@ -19,6 +26,7 @@ from utils.general import check_img_size, check_requirements, non_max_suppressio
 from utils.plots import Annotator
 from utils.torch_utils import select_device, time_sync
 from Google_Cloud_Vision_API import GCV_model, CU, GS, Emart24
+from konlpy.tag import Mecab
 #from rembg.bg import remove as remove_bg
 
 
@@ -31,7 +39,7 @@ with open(json_label_path, 'r', encoding='utf-8') as f:
 
 yolo_ready_flag = True
 object_detect_flag = False
-WEIGHTS = 'back_small.pt'
+WEIGHTS = '640_s_model.pt'
 IMG_SIZE = 640
 DEVICE = ''
 AUGMENT = False
@@ -80,20 +88,28 @@ def detect():
             if (target_object[-1] == "."):
                 target_object = target_object[:-1]
 
+            # if space split
+            #target_object = target_object.split(' ')
+            # if no split str (사실 둘 다 적용 가능)
+            mecab = Mecab()
+            target_object = mecab.nouns(target_object.replace(" ",""))
+
             Out_Category = []
-            Input_ETRI.append(target_object)
+            Input_ETRI = target_object
             for ETRI in Input_ETRI:
                 for key in json_data.keys():
                     for value in json_data[key]:
                         if ETRI in value:
                             Out_Category.append(key)
 
-            target_category = Out_Category[0]
+            target_category = Out_Category
+            for obj, cate in zip(target_object,target_category):
+                print("target_object : " + obj)
+                print("target_category :" + cate)
+            target_object = ' '.join([obj for obj in target_object])
+            target_category = ' '.join([cate for cate in target_category])
 
-            print("target_object : " + target_object)
-            print("target_category :" + target_category)
-
-            return "1" #"TARGET : " + target_object + " - " + target_category
+            return "1"
         ########################################################
 
         ####### smart bill #####################################
@@ -107,7 +123,7 @@ def detect():
             cv2.imwrite('from_android_bill.jpg', img)
 
             with open('from_android_bill.jpg', 'rb') as f:
-                content = f.read();
+                content = f.read()
 
             save_path = "GCV_text.txt"
             GCV_model(content,save_path)
@@ -118,9 +134,12 @@ def detect():
             #Emart24(target_object,strings)
             file.close()
 
-            print("가격: ", digit)
-            print("target 물품: ", text)
-            return "2" #"FINISH SMART BILL"
+            print(digit)
+            print(text)
+            if len(text) != 0:
+                return "2"
+            else:
+                return "7" + ' '.join(text)
         ########################################################
 
         if yolo_ready_flag == True:
@@ -153,7 +172,7 @@ def detect():
             ### Decode base64 ################################
             image_str = data
             decoded_string = np.fromstring(base64.b64decode(image_str), np.uint8)
-            print(image_str[900:905])
+            #print(image_str[900:905])
             img0 = cv2.imdecode(decoded_string, cv2.IMREAD_COLOR)
             img0 = cv2.rotate(img0, cv2.ROTATE_90_CLOCKWISE)
             cv2.imwrite('from_android_yolo.jpg', img0)
@@ -228,39 +247,71 @@ def detect():
             yolo_ready_flag = True
             #print("Bounding Box :", box_)
             print("현재 카테고리 :", max_name)
-            print("현재 물품 :", labels_)
+            print("현재 품목 :", labels_)
 
-
-            if ((object_detect_flag == False) and (target_category == max_name[0])): #Find Category?
+            object_list = target_object.split(' ')
+            category_list = target_category.split(' ')
+            if ((object_detect_flag == False) and max_name[0] in category_list): #Find Category?
 
                 ### Setting for Object Detecting ######
-                WEIGHTS = 'back_320small.pt'
-                IMG_SIZE = 320
+                #WEIGHTS = 'back_320small.pt'
+                #IMG_SIZE = 320
                 object_detect_flag = True
                 #######################################
                 print("Find Target Category")
-                return "3" #"Find Target Category"
+                if max_name[0] == "유제품":
+                    return "10"
+                elif max_name[0] == "과자":
+                    return "11"
+                elif max_name[0] == "음료":
+                    return "12"
+                return "3"
 
 
             elif (object_detect_flag == True): #Find Object After Find Category?
 
-                for i in labels_:
-                    if (i.find(target_object) != -1):
-                        print("Find Target Object")
-                        return "4" #"Find Target Object"
+                for obj in object_list:
+                    for i in labels_:
+                        # print(obj, labels_)
+                        if (i.find(obj) != -1):
+                            print("Find Target Object")
+                            if i == "남양맛있는우유GT":
+                                return "20"
+                            elif i == "농심매운새우깡90G":
+                                return "21"
+                            elif i == "매일아몬드브리즈뉴트리플러스프로틴":
+                                return "22"
+                            elif i == "코카콜라)코카콜라350ML":
+                                return "23"
+                            elif i == "농심자갈치90G":
+                                return "24"
+                            elif i == "농심바나나킥75G":
+                                return "25"
+                            elif i == "코카토레타500ML":
+                                return "26"
+                            elif i == "서울우유":
+                                return "27"
+                            elif i == "코카환타오렌지1.5L":
+                                return "28"
 
-                if (target_category == max_name[0]): #Cannot Find Object? So, Check Max_Category
+                if (max_name[0] in category_list): #Cannot Find Object? So, Check Max_Category
                     print("Find Target Category But Not Object")
-                    return "5" #"Find Target Category But Not Object"
+                    if max_name[0] == "유제품":
+                        return "10"
+                    elif max_name[0] == "과자":
+                        return "11"
+                    elif max_name[0] == "음료":
+                        return "12"
+                    return "3"
 
                 else:
                     ### Setting to Return Category Detecting #####
-                    WEIGHTS = 'back_small.pt'
-                    IMG_SIZE = 640
+                    #WEIGHTS = 'back_small.pt'
+                    #IMG_SIZE = 640
                     object_detect_flag = False
                     ##############################################
         print("Detecting ...")
-        return "6" #"Detecting ..."
+        return "6"
 
     else:
         return "GET or else"
