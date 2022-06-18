@@ -1,3 +1,5 @@
+$ python3 multi_detect.py
+
 <div align="center">
 <p>
    <a align="left" href="https://ultralytics.com/yolov5" target="_blank">
