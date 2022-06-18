@@ -1,4 +1,7 @@
-$ python3 multi_detect.py
+실행
+```bash
+python3 multi_detect.py
+```
 
 <div align="center">
 <p>
